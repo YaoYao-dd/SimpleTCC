@@ -31,23 +31,24 @@ public class TransferController {
     @Autowired
     private TccTransactionMapper tm;
 
+
+
+    @Operation(summary = "")
+    @PostMapping("transfer/{fromAcctId}")
+    public Account transferMoney(@PathVariable String fromAcctId,@RequestParam String toAcctId, @RequestParam BigDecimal amount){
+        return service.transferMoneyToAnotherBankAcct(fromAcctId, toAcctId, amount);
+    }
+
     @Operation(summary = "")
     @GetMapping("{accountId}")
     public Account getAccountBy(@PathVariable String accountId){
-        Account result = service.findBy(accountId);
-        return result;
+        return service.findBy(accountId);
     }
 
     @Operation(summary = "")
     @GetMapping("")
     public List<Account> getAll(){
-        var tt= tm.allParticipants();
-        return service.all();
-    }
 
-    @Operation(summary = "")
-    @PostMapping("transferOut/{accountId}")
-    public Account transferOut(@PathVariable String accountId, @RequestParam BigDecimal amount){
-        return service.transferOut(accountId,amount);
+        return service.all();
     }
 }

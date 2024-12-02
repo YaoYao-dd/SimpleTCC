@@ -17,7 +17,7 @@ public class TransactionStepOver {
      * @return .
      */
     public static Transaction stripTxnForNextRpcHop(Transaction currTran, Participant newParticipant){
-        var transToNextApp= currTran.stripCopy();
+        var transToNextApp= currTran.stripCopy(newParticipant);
         transToNextApp.setCoordinator(newParticipant.stripCopy());
         return transToNextApp;
     }

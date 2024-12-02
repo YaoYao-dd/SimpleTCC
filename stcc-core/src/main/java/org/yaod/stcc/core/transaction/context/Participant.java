@@ -2,6 +2,7 @@ package org.yaod.stcc.core.transaction.context;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.yaod.stcc.core.transaction.enums.TransactionActionEnum;
 import org.yaod.stcc.core.transaction.enums.TransactionRoleEnum;
 import org.yaod.stcc.core.transaction.enums.TransactionStatusEnum;
 
@@ -21,7 +22,7 @@ public class Participant {
         var now=System.currentTimeMillis();
         this.createdTs=now;
         this.lastUpdatedTs=now;
-        this.status= TransactionStatusEnum.TRYING;
+        this.status= TransactionStatusEnum.INIT;
 
     }
     public Participant(String aTransId, String aBranchTransId) {
@@ -29,12 +30,14 @@ public class Participant {
     }
 
     public Participant stripCopy(){
-        var stripPar=new Participant(this.globalTransId, this.branchTransId);
+        var stripPar=new Participant(this.globalTransId, this.branchTransId, this.drivingBranchTransId);
         stripPar.branchTransId=this.branchTransId;
         stripPar.createdTs=this.createdTs;
         stripPar.lastUpdatedTs=this.lastUpdatedTs;
         stripPar.status=this.status;
+        stripPar.action=this.action;
         stripPar.role=this.role;
+        stripPar.index = this.index;
         stripPar.initiatorFlag=false;
         return stripPar;
     }
@@ -50,6 +53,8 @@ public class Participant {
     private String appName="";
     private TransactionStatusEnum status;
 
+    private TransactionActionEnum action;
+
     //Can be coordinator, can be participant.
     //a participant in upstream API can become a coordinator in the downstream for nested transaction.
     private TransactionRoleEnum role;
@@ -58,4 +63,6 @@ public class Participant {
     private long lastUpdatedTs;
 
     private boolean initiatorFlag = false;
+
+    private int index=0;
 }

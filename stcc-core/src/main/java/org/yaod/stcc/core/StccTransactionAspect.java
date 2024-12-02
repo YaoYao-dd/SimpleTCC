@@ -16,7 +16,7 @@ public class StccTransactionAspect {
     @Around("@annotation(org.yaod.stcc.core.annotation.TryTCC)")
     public Object aroundHandlingStcc(final ProceedingJoinPoint tccTryJointPoint) throws Throwable {
         var transaction= ContextHolder.get();
-        var invocation = InvocationUtils.convertInnovation(tccTryJointPoint);
+        var invocation = InvocationUtils.convertInnovationFrm(tccTryJointPoint);
         return TccCoordinationInterceptor.INST.handleTCC(transaction, invocation, tccTryJointPoint);
     }
 }

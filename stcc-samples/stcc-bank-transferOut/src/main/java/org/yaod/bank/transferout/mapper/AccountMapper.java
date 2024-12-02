@@ -16,12 +16,21 @@ import java.util.List;
 @Mapper
 public interface AccountMapper {
 
-    @Select(value = "select id, amount from account where id = #{id}")
+    @Select(value = "select id, balance from account where id = #{id}")
     Account findBy(@Param("id") String id);
 
-    @Select("select id, amount from account")
+    @Select("select id, balance from account")
     List<Account> all();
 
-    @Update("update  account set amount= amount - #{amount} where id = #{id}")
-    int decrease(@Param("id") String id, @Param("amount") BigDecimal amount);
+    @Update("""
+                update  account set available_balance = available_balance - #{amount}  where id = #{id}
+                and available_balance>=#{amount}
+                """)
+    int tryWithdraw(@Param("id") String id, @Param("amount") BigDecimal amount);
+
+    @Update("update  account set  balance = balance - #{amount} where id = #{id}")
+    int confirmWithdraw(@Param("id") String id, @Param("amount") BigDecimal amount);
+
+    @Update("update  account set available_balance= available_balance + #{amount} where id = #{id}")
+    int cancelWithdraw(@Param("id") String id, @Param("amount") BigDecimal amount);
 }

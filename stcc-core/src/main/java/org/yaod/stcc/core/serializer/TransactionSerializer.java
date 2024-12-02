@@ -19,6 +19,10 @@ public class TransactionSerializer{
     }
 
     public synchronized Transaction deSerialize(String transJson){
+        if(transJson==null) {
+            return null;
+        }
         return gson.fromJson(transJson, Transaction.class);
+
     }
 }

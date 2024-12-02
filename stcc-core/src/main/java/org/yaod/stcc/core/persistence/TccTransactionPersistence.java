@@ -13,8 +13,8 @@ import java.util.List;
  **/
 public interface TccTransactionPersistence {
 
-    int persistParticipant(Participant participant,  int isInitiator);
-    List<Participant> allParticipants();
+    int persistParticipant(Participant participant,  boolean isInitiator);
+    List<Participant> getParticipantsForTransaction(String transId);
     Participant getParticipantsBy( String branchTransId);
 
     int updateParticipantStatus(Participant participant);

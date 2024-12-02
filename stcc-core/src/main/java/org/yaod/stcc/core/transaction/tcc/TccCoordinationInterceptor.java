@@ -41,6 +41,7 @@ public class TccCoordinationInterceptor {
 
 
     public Object handleTCC(Transaction transaction, Invocation invocation, ProceedingJoinPoint jointPoint) throws Throwable {
+
         StccProcessor stccProcessor = this.chooseByTransactionAction(transaction);
         return stccProcessor.processTransaction(transaction, invocation, jointPoint);
     }
