@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.yaod.bank.transferout.client.BankTransferInClient;
 import org.yaod.bank.transferout.mapper.AccountMapper;
 import org.yaod.bank.transferout.model.Account;
@@ -19,18 +20,17 @@ public class AccountService {
     @Autowired
     private AccountMapper mapper;
     @Autowired
-    private BankTransferInClient transferInClient;
+    private BankTransferInClient rpcClient;
 
-
-    //@Transactional
-    @TryTCC(confirm = "confirmWithdraw", cancel = "cancelWithdraw")
+    @TryTCC(confirm = "confirmWithdraw", cancel = "cancelWithdraw", asyncCC = true)
     public Account transferMoneyToAnotherBankAcct(String fromAccId, String toAccId, BigDecimal amount){
         LOGGER.info("trying withdraw");
+        //Local transaction(DB).
         checkImpactedRows(mapper.tryWithdraw(fromAccId, amount));
-        transferInClient.depositTo(toAccId, amount);
+        //RPC call.
+        rpcClient.depositTo(toAccId, amount);
 
         return findBy(fromAccId);
-
     }
 
     public void confirmWithdraw(String fromAccId, String toAccId, BigDecimal amount){

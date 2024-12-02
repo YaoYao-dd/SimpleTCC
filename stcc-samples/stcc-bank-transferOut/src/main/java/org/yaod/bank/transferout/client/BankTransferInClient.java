@@ -13,10 +13,9 @@ import java.math.BigDecimal;
 /**
  * @author Yaod
  **/
-@FeignClient(name= "mockserver", url = "http://localhost:8081/")
+@FeignClient(name= "rpcCall", url = "http://localhost:8081/")
 @ParticipateTCC
 public interface BankTransferInClient {
-
     @RequestMapping(method = RequestMethod.POST, value = "/accounts/transferTo/{accountTo}")
     @ParticipateTCC
     Object depositTo(@PathVariable("accountTo") String accountTo,@RequestParam("amount") BigDecimal amount);

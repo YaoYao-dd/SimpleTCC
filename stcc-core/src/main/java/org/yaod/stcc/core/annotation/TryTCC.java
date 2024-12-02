@@ -17,5 +17,5 @@ public @interface TryTCC {
     String cancel() default "";
 
     //async mode for confirm/cancel.
-    boolean asyncMode() default true;
+    boolean asyncCC() default true;
 }

@@ -20,7 +20,7 @@ public class AccountService {
 
 
     //@Transactional
-    @TryTCC(confirm = "confirm", cancel = "cancel")
+    @TryTCC(confirm = "confirm", cancel = "cancel", asyncCC = true)
     public Account tryDeposit(String accountId, BigDecimal amount){
         System.out.println("trying");
         checkImpactedRows(mapper.tryDeposit(accountId, amount));
