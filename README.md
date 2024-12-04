@@ -1,5 +1,5 @@
 # SimpleTCC
-Distributed Transaction - TCC framework
+Distributed Transaction(Try-Confirm/Cancel) - TCC framework.
 
 
 ## What is a TCC?
